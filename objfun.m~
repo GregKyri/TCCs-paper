@@ -1,0 +1,276 @@
+%function [opt,data] = OptimizeLSTM(options,layers,Xtrain,Xtest,Ytrain,Ytest)
+
+
+
+
+% function [ObjFcn]=objfun(Xtrain,Ytrain,wi)
+% %% Setting main LSTM parameters
+% %        numFeatures = wi;
+% %        numResponses = 1;
+%        numClasses = numel(unique(Ytrain));
+%        numHiddenUnits = 60;
+%        DropoutLayer = true;
+%        BiLSTMLayer = true;
+
+
+
+function ObjFcn = ObjFcn(optimVars,Xtrain,Ytrain)
+ObjFcn = @CostFunction;
+function [valError,cons,fileName] = CostFunction(optVars)
+numFeatures = wi;
+outputMode   = 'sequence';
+numResponses = 1;
+dropoutVal   = 0.5;
+if optVars.isUseBiLSTMLayer == 2
+    optVars.isUseBiLSTMLayer = 0;
+end
+if DropoutLayer % if dropout layer is true
+    if optVars.NumOfLayer ==1
+        if BiLSTMLayer
+            layers = [ ...
+                sequenceInputLayer(numFeatures)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                dropoutLayer(dropoutVal)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        else
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                lstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                dropoutLayer(dropoutVal)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        end
+    elseif optVars.NumOfLayer==2
+        if BiLSTMLayer
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                dropoutLayer(dropoutVal)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        else
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                lstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                lstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                dropoutLayer(dropoutVal)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        end
+    elseif optVars.NumOfLayer ==3
+        if BiLSTMLayer
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                dropoutLayer(dropoutVal)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        else
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                lstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                lstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                lstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                dropoutLayer(dropoutVal)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        end
+    elseif optVars.NumOfLayer==4
+        if BiLSTMLayer
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                dropoutLayer(dropoutVal)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        else
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                lstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                lstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                lstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                lstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                dropoutLayer(dropoutVal)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        end
+    end
+    elseif optVars.NumOfLayer==5
+        if BiLSTMLayer
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                dropoutLayer(dropoutVal)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                dropoutLayer(dropoutVal)                
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        else
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                lstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                lstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                lstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                dropoutLayer(dropoutVal)
+                lstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                dropoutLayer(dropoutVal)
+                lstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                dropoutLayer(dropoutVal)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        end
+
+    else % if dropout layer is false
+    if optVars.NumOfLayer ==1
+        if BiLSTMLayer
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        else
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                lstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        end
+    elseif optVars.NumOfLayer ==2
+        if BiLSTMLayer
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        else
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                lstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                lstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        end
+    elseif optVars.NumOfLayer ==3
+        if BiLSTMLayer
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        else
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        end
+    elseif optVars.NumOfLayer ==4
+        if BiLSTMLayer
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        else
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        end
+       elseif optVars.NumOfLayer ==5
+        if BiLSTMLayer
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                bilstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        else
+            layers = [ ...
+                sequenceInputLayer(inputSize)
+                lstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                lstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                lstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                lstmLayer(optVars.NumOfUnits,'OutputMode','sequence')
+                lstmLayer(optVars.NumOfUnits,'OutputMode',outputMode)
+                fullyConnectedLayer(numResponses)
+                regressionLayer];
+        end
+    end
+end
+
+options = trainingOptions('adam', ...
+    'MaxEpochs',150, ...
+    'GradientThreshold',1, ...
+    'InitialLearnRate',optVars.InitialLearnRate, ...
+    'LearnRateSchedule','piecewise', ...
+    'LearnRateDropPeriod',125, ...
+    'LearnRateDropFactor',0.2, ...
+    'L2Regularization',optVars.L2Regularization, ...
+    'Verbose',1, ...
+    'MiniBatchSize',20,...
+    'ExecutionEnvironment','cpu',...
+    'ValidationData',{Xtrain(3800:end),Ytrain(3800:end)}, ...
+    'Plots','training-progress');
+disp('LSTM architect successfully created.');
+
+%% --------------- Train small Network
+k=randperm(length(Xtrain));
+Xtraincheck=Xtrain(k(1:500),:); Ytraincheck=Ytrain(k(1:500),:);
+Xtestcheck=Xtraincheck(k(501:550),:); Ytestcheck=Ytraincheck(k(501:550),:);
+try
+    MLtraincheck = trainNetwork(Xtraincheck,Ytraincheck,layers,options);
+    disp('LSTM Netwwork successfully trained.');
+    NetTrainSuccess =true;
+catch me
+    disp('Error on Training LSTM Network');
+    NetTrainSuccess = false;
+    return;
+end
+close(findall(groot,'Tag','NNET_CNN_TRAININGPLOT_UIFIGURE'))
+predict(MLtraincheck,data.XVl,'MiniBatchSize',opt.miniBatchSize);
+valError = mse(predict(data.BiLSTM.Net,data.XVl,'MiniBatchSize',opt.miniBatchSize)-data.YVl);
+Net  = data.BiLSTM.Net;
+Opts = opt.opts;
